@@ -6,18 +6,6 @@ on:
       - docker/*.*.*-*
 
 jobs:
-  build-image-with-buildah:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      -
-        name: Build with buildah
-        run: buildah bud .
-
   build-docker-image:
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +52,7 @@ jobs:
           push: ${{ steps.have_credentials.outputs.access }}
           target: final
           file: Dockerfile.ubuntu2204
-          tags: vagrant-libvirt:ubuntu2204
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vagrant-libvirt:ubuntu2204
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
